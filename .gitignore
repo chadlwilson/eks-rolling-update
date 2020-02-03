@@ -4,4 +4,8 @@ venv
 .vscode
 .env
 .coverage
-.idea
+.idea/
+.eggs/
+build/
+dist/
+*.egg-info/
