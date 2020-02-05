@@ -2,7 +2,7 @@ import boto3
 import time
 import requests
 from lib.logger import logger
-from config import app_config
+from core.config import app_config
 
 client = boto3.client('autoscaling')
 ec2_client = boto3.client('ec2')

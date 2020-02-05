@@ -30,7 +30,7 @@ help:
 setup: clean virtualenv requirements
 
 run:
-	python3 $(CURDIR)/eks_rolling_update.py --help
+	python3 $(CURDIR)/core/eks_rolling_update.py --help
 
 test: code-style test-unit
 
@@ -38,7 +38,7 @@ test-unit:
 	PYTHONPATH=$(CURDIR) nose2 --with-coverage
 
 code-style:
-	flake8 --ignore E501 eks_rolling_update.py lib/
+	flake8 --ignore E501 core/eks_rolling_update.py lib/
 
 virtualenv:
 	virtualenv -p python3 $(CURDIR)/$(VENV)

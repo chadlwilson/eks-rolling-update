@@ -69,7 +69,7 @@ ktx <environment>
 ## Usage
 
 ```
-usage: eks_rolling_update.py [-h] --cluster_name CLUSTER_NAME [--plan [PLAN]]
+usage: core/eks_rolling_update.py [-h] --cluster_name CLUSTER_NAME [--plan [PLAN]]
 
 Rolling update on cluster
 
@@ -138,11 +138,11 @@ Each of them have different advantages and disadvantages.
               K8S_AUTOSCALER_DEPLOYMENT="CA_DEPLOYMENT_NAME"
 
     # plan
-    $ python eks_rolling_update.py --cluster_name YOUR_EKS_CLUSTER_NAME --plan
+    $ python core/eks_rolling_update.py --cluster_name YOUR_EKS_CLUSTER_NAME --plan
     ...
 
     # apply changes
-    $ python eks_rolling_update.py --cluster_name YOUR_EKS_CLUSTER_NAME
+    $ python core/eks_rolling_update.py --cluster_name YOUR_EKS_CLUSTER_NAME
     ```
 - disable operations on `cluster-autoscaler`
   ```
@@ -151,13 +151,13 @@ Each of them have different advantages and disadvantages.
 - enable features only for one run
   ```
     # DRY_RUN will only be used by the current updater session
-    $ DRY_RUN=1 python eks_rolling_update.py --cluster_name YOUR_CLUSTER_NAME
+    $ DRY_RUN=1 python core/eks_rolling_update.py --cluster_name YOUR_CLUSTER_NAME
 
     # operate on cluster-autoscaler only for this updater session
     $ K8S_AUTOSCALER_ENABLED=1 \
       K8S_AUTOSCALER_NAMESPACE="somenamespace" \
       K8S_AUTOSCALER_DEPLOYMENT="deploymentname" \
-      python eks_rolling_update.py --cluster_name YOUR_CLUSTER_NAME
+      python core/eks_rolling_update.py --cluster_name YOUR_CLUSTER_NAME
   ```
 - `.env` file
   ```

@@ -2,7 +2,7 @@ import sys
 import argparse
 import time
 import shutil
-from config import app_config
+from core.config import app_config
 from lib.logger import logger
 from lib.aws import is_asg_scaled, is_asg_healthy, instance_terminated, get_asg_tag, modify_aws_autoscaling, \
     count_all_cluster_instances, save_asg_tags, get_asgs, terminate_instance, scale_asg, plan_asgs, delete_asg_tags, \
@@ -210,7 +210,7 @@ def update_asgs(asgs, cluster_name):
     logger.info('All asgs processed')
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='Rolling update on cluster')
     parser.add_argument('--cluster_name', '-c', required=True,
                         help='the cluster name to perform rolling update on')
@@ -252,3 +252,7 @@ if __name__ == "__main__":
                 # resume autoscaler no matter what happens
                 modify_k8s_autoscaler("resume")
             sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

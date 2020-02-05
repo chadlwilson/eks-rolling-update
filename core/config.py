@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 from distutils.util import strtobool
 import os
-load_dotenv()
+load_dotenv('{}/.env'.format(os.getcwd()))
 
 def str_to_bool(val):
     return val if type(val) is bool else bool(strtobool(val))
