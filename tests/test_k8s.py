@@ -1,9 +1,10 @@
 import os
 import unittest
 import json
-from eksrollup.lib.k8s import k8s_nodes_count, k8s_nodes_ready, get_node_by_instance_id
+from eksrollup.lib.k8s import k8s_nodes_count, k8s_nodes_ready, get_node_by_instance_id, ensure_config_loaded
 from unittest.mock import patch
 from box import Box
+from kubernetes.client import ApiClient
 
 
 class TestK8S(unittest.TestCase):
@@ -16,6 +17,24 @@ class TestK8S(unittest.TestCase):
 
         with open(f"{current_dir}/fixtures/k8s_response_unhealthy.json", "r") as file:
             self.k8s_response_mock_unhealthy = json.load(file)
+
+        for env_key in filter(lambda key: key in os.environ, ['HTTP_PROXY', 'HTTPS_PROXY']):
+            os.environ.pop(env_key)
+
+    def test_ensure_config_loaded_proxy_default(self):
+        ensure_config_loaded()
+        self.assertEqual(ApiClient().configuration.proxy, None)
+
+    def test_ensure_config_loaded_proxy_prefers_https(self):
+        os.environ['HTTPS_PROXY'] = 'http://localhost:12345'
+        os.environ['HTTP_PROXY'] = 'http://localhost:6789'
+        ensure_config_loaded()
+        self.assertEqual(ApiClient().configuration.proxy, 'http://localhost:12345')
+
+    def test_ensure_config_loaded_proxy_fallback_to_http(self):
+        os.environ['HTTP_PROXY'] = 'http://localhost:12345'
+        ensure_config_loaded()
+        self.assertEqual(ApiClient().configuration.proxy, 'http://localhost:12345')
 
     def test_k8s_node_count(self):
         with patch('eksrollup.lib.k8s.get_k8s_nodes') as get_k8s_nodes_mock:
